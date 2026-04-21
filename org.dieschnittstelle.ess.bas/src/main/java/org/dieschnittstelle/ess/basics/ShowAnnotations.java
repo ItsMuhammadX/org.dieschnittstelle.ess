@@ -4,6 +4,10 @@ package org.dieschnittstelle.ess.basics;
 import org.dieschnittstelle.ess.basics.annotations.AnnotatedStockItemBuilder;
 import org.dieschnittstelle.ess.basics.annotations.StockItemProxyImpl;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
+import static org.dieschnittstelle.ess.basics.reflection.ReflectedStockItemBuilder.getAccessorNameForField;
 import static org.dieschnittstelle.ess.utils.Utils.*;
 
 public class ShowAnnotations {
@@ -31,6 +35,8 @@ public class ShowAnnotations {
 	private static void showAttributes(Object instance) {
 		show("class is: " + instance.getClass());
 
+		Class klass = instance.getClass();
+
 		try {
 
 			// TODO BAS2: create a string representation of instance by iterating
@@ -39,6 +45,16 @@ public class ShowAnnotations {
 			//  will then be built from the field names and field values.
 			//  Note that only read-access to fields via getters or direct access
 			//  is required here.
+
+			//{<einfacher Klassenname> <attr1>:<Wert von attr1>, ...}, z.B.:
+			//{Milch menge:20, markenname:Mark Brandenburg}
+
+			for (Field field : klass.getDeclaredFields()) {
+				String name = getAccessorNameForField("get", field.getName());
+				Method getter = klass.getMethod(name);
+				Object fieldValue = getter.invoke(instance);
+				show("%s %s:%s", klass.getSimpleName(), field.getName(), fieldValue);
+			}
 
 			// TODO BAS3: if the new @DisplayAs annotation is present on a field,
 			//  the string representation will not use the field's name, but the name
