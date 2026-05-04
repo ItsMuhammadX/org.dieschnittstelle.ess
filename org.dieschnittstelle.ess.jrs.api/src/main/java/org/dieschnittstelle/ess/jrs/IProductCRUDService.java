@@ -24,7 +24,7 @@ import java.util.List;
 /*
  * TODO JRS3: aendern Sie Argument- und Rueckgabetypen der Methoden von IndividualisedProductItem auf AbstractProduct
  */
-@Path("/product")
+@Path("/products")
 @Consumes({MediaType.APPLICATION_JSON})
 @Produces({MediaType.APPLICATION_JSON})
 public interface IProductCRUDService {
