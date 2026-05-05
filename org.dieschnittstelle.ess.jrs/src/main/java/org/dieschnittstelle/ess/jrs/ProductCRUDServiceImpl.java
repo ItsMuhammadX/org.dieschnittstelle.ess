@@ -7,7 +7,6 @@ import jakarta.ws.rs.core.Context;
 import org.apache.logging.log4j.Logger;
 import org.dieschnittstelle.ess.entities.GenericCRUDExecutor;
 import org.dieschnittstelle.ess.entities.erp.AbstractProduct;
-import org.dieschnittstelle.ess.entities.erp.IndividualisedProductItem;
 
 import java.util.List;
 
@@ -34,23 +33,23 @@ public class ProductCRUDServiceImpl implements IProductCRUDService {
 
 
 	@Override
-	public IndividualisedProductItem createProduct(IndividualisedProductItem prod) {
+	public AbstractProduct createProduct(AbstractProduct prod) {
 		// TODO Auto-generated method stub
-		return (IndividualisedProductItem) this.productCRUD.createObject(prod);
+		return this.productCRUD.createObject(prod);
 	}
 
 	@Override
-	public List<IndividualisedProductItem> readAllProducts() {
+	public List<AbstractProduct> readAllProducts() {
 		// TODO Auto-generated method stub
-		return (List) this.productCRUD.readAllObjects();
+		return this.productCRUD.readAllObjects();
 	}
 
 	@Override
-	public IndividualisedProductItem updateProduct(long id,
-			IndividualisedProductItem update) {
+	public AbstractProduct updateProduct(long id,
+	                                     AbstractProduct update) {
 		// TODO Auto-generated method stub
 		update.setId(id);
-		return (IndividualisedProductItem) this.productCRUD.updateObject(update);
+		return this.productCRUD.updateObject(update);
 
 	}
 
@@ -61,9 +60,9 @@ public class ProductCRUDServiceImpl implements IProductCRUDService {
 	}
 
 	@Override
-	public IndividualisedProductItem readProduct(long id) {
+	public AbstractProduct readProduct(long id) {
 		// TODO Auto-generated method stub
-		IndividualisedProductItem item = (IndividualisedProductItem) this.productCRUD.readObject(id);
+		AbstractProduct item = this.productCRUD.readObject(id);
 
 		if(item != null){
 			return item;
