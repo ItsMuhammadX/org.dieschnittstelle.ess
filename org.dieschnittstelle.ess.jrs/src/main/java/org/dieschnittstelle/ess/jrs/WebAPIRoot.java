@@ -19,7 +19,7 @@ public class WebAPIRoot extends Application {
 
     @Override
     public Set<Class<?>> getClasses() {
-        return Set.of(TouchpointCRUDServiceOPIImpl.class, ProductCRUDServiceImpl.class);
+        return Set.of(TouchpointCRUDServiceImpl.class, ProductCRUDServiceImpl.class);
 
     }
 }
