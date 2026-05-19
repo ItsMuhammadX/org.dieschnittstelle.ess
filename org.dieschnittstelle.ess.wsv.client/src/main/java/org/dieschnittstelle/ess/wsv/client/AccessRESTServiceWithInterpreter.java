@@ -42,7 +42,7 @@ public class AccessRESTServiceWithInterpreter {
         step();
 
         // 1) read out all touchpoints
-        List<AbstractTouchpoint> tps = serviceProxy.readAllTouchpoints();
+        List<AbstractTouchpoint> tps = (List)serviceProxy.readAllTouchpoints();
         show("read all: " + tps);
 
 

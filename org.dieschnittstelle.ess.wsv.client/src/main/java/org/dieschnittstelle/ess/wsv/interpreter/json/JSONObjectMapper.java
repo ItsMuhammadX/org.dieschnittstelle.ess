@@ -22,6 +22,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 import org.apache.logging.log4j.Logger;
 
+import static org.dieschnittstelle.ess.utils.Utils.show;
+
 /**
  * 
  * CAUTION: THIS IS A RATHER QUICK&DIRTY SOLUTION... !!!
@@ -211,13 +213,36 @@ public class JSONObjectMapper {
 				// create a new instance of the class
 				Object obj = null;
 
-				// check whether we have an abstract class that has jsontype
+				// check whether we have an abstract class that has sontype
 				// info present
 				if (Modifier.isAbstract(((Class) type).getModifiers())) {
+					JsonTypeInfo typeInfo = (JsonTypeInfo) ((Class) type).getAnnotation(JsonTypeInfo.class);
+
+					if(typeInfo == null){
+						throw new ObjectMappingException("No JsonTypeInfo for class:" + type);
+					}
+					String propertyName = typeInfo.property();
+
+					JsonNode typeInfoValue = ((ObjectNode)json).get(propertyName);
+
+					if (typeInfoValue == null || typeInfoValue.isNull()) {
+						throw new ObjectMappingException("Wrong " + type);
+					}
+
+					String concreteClassname = typeInfoValue.asText();
+
+					show("concreteClassname: %s", concreteClassname);
+
+					Class concretClass = Class.forName(concreteClassname);
+
+					obj = concretClass.newInstance();
+
+					type = concretClass;
+
+
 					// TODO: include a handling for abstract classes considering
 					// the JsonTypeInfo annotation that might be set on type
-					throw new ObjectMappingException(
-							"cannot instantiate abstract class: " + type);
+
 				} else {
 					obj = ((Class) type).newInstance();
 				}
