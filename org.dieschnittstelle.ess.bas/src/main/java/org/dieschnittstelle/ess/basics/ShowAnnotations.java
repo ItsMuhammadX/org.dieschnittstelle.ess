@@ -3,6 +3,7 @@ package org.dieschnittstelle.ess.basics;
 
 import org.dieschnittstelle.ess.basics.annotations.AnnotatedStockItemBuilder;
 import org.dieschnittstelle.ess.basics.annotations.StockItemProxyImpl;
+import org.dieschnittstelle.ess.basics.annotations.DisplayAs;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -48,12 +49,22 @@ public class ShowAnnotations {
 
 			//{<einfacher Klassenname> <attr1>:<Wert von attr1>, ...}, z.B.:
 			//{Milch menge:20, markenname:Mark Brandenburg}
+			String output = "{" + klass.getSimpleName() + " ";
 
 			for (Field field : klass.getDeclaredFields()) {
 				String name = getAccessorNameForField("get", field.getName());
 				Method getter = klass.getMethod(name);
 				Object fieldValue = getter.invoke(instance);
-				show("%s %s:%s", klass.getSimpleName(), field.getName(), fieldValue);
+
+				DisplayAs displayAs = field.getAnnotation(DisplayAs.class);
+
+				String displayName = field.getName();
+
+				if (displayAs != null) {
+					displayName = displayAs.value();
+				}
+
+				output = output + displayName + ":" + fieldValue + ", ";
 			}
 
 			// TODO BAS3: if the new @DisplayAs annotation is present on a field,
@@ -61,6 +72,9 @@ public class ShowAnnotations {
 			//  specified in the the annotation. Regardless of @DisplayAs being present
 			//  or not, the field's value will be included in the string representation.
 
+			output = output.substring(0, output.length() - 2);
+			output = output + "}";
+			show(output);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
