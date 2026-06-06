@@ -26,37 +26,37 @@ public class ProductCRUDImpl implements ProductCRUD {
 
     @Override
     public AbstractProduct createProduct(AbstractProduct prod) {
-        //em.persist(prod);
+        em.persist(prod);
         return prod;
     }
 
     @Override
     public List<AbstractProduct> readAllProducts() {
-        IndividualisedProductItem prod = new IndividualisedProductItem();
-        prod.setName("Kirschplunder");
-        prod.setProductType(ProductType.PASTRY);
-        return List.of(prod);
-        //Query query = em.createQuery("SELECT DISTINCT p FROM AbstractProduct");
-        //return query.getResultList();
+        //IndividualisedProductItem prod = new IndividualisedProductItem();
+        //prod.setName("Kirschplunder");
+        //prod.setProductType(ProductType.PASTRY);
+        //return List.of(prod);
+        Query query = em.createQuery("SELECT p FROM AbstractProduct p");
+        return query.getResultList();
     }
 
     @Override
     public AbstractProduct updateProduct(AbstractProduct update) {
-        //return em.merge(update);
-        return null;
+        return em.merge(update);
+        //return null;
     }
 
     @Override
     public AbstractProduct readProduct(long productID) {
-        //return em.find(AbstractProduct.class, productID);
-        return null;
+        return em.find(AbstractProduct.class, productID);
+        //return null;
     }
     @Override
     public boolean deleteProduct(long productID) {
         try {
             AbstractProduct prod = this.readProduct(productID);
             if (prod != null) {
-                //em.remove(prod);
+                em.remove(prod);
                 return true;
             } else {
                 return false;
