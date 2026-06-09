@@ -31,6 +31,7 @@ public class StockSystemImpl implements StockSystem {
     }
 
     public void removeFromStock(IndividualisedProductItem product, long pointOfScaleId, int units){
+        this.addToStock(product,pointOfScaleId,-units);
 
     }
 

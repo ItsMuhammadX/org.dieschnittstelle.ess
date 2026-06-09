@@ -3,6 +3,7 @@ package org.dieschnittstelle.ess.mip.components.erp.crud.impl;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 import org.dieschnittstelle.ess.entities.erp.IndividualisedProductItem;
 import org.dieschnittstelle.ess.entities.erp.PointOfSale;
@@ -22,17 +23,25 @@ public class StockItemCRUDImpl implements StockItemCRUD{
 
     @Override
     public StockItem createStockItem(StockItem item) {
-        return null;
+        em.persist(item);
+        return item;
     }
 
     @Override
     public StockItem readStockItem(IndividualisedProductItem prod, PointOfSale pos) {
+        Query query = em.createQuery("SELECT DISTINCT si FROM Stockitem si WHERE si.product.id = :prodId AND si.pos.id = :posId");
+        query.setParameter("prodId", prod.getId());
+        query.setParameter("posId", pos.getId());
+        List<StockItem> sis = query.getResultList();
+        if(!sis.isEmpty()){
+            return sis.get(0);
+        }
         return null;
     }
 
     @Override
     public StockItem updateStockItem(StockItem item) {
-        return null;
+        return em.merge(item);
     }
 
     @Override
