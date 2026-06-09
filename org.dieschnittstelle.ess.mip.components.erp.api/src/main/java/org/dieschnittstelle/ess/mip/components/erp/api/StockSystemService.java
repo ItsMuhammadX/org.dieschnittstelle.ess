@@ -16,12 +16,12 @@ public interface StockSystemService {
 	/**
 	 * adds some units of a product to the stock of a point of sale
 	 */
-    void addToStock(long productId, long pointOfSaleId, int units);
+    void addToStock(StockItemDTD stockItemDTD);
 
 	/**
 	 * removes some units of a product from the stock of a point of sale
 	 */
-    void removeFromStock(long productId, long pointOfSaleId, int units);
+    void removeFromStock(StockItemDTD stockItemDTD);
 
 	/**
 	 * returns all products on stock or, if pointOfSaleId is specified, the products for some pointOfSale
