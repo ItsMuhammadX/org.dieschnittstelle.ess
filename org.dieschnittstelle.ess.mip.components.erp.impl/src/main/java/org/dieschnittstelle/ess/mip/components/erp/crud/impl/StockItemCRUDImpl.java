@@ -29,7 +29,7 @@ public class StockItemCRUDImpl implements StockItemCRUD{
 
     @Override
     public StockItem readStockItem(IndividualisedProductItem prod, PointOfSale pos) {
-        Query query = em.createQuery("SELECT DISTINCT si FROM Stockitem si WHERE si.product.id = :prodId AND si.pos.id = :posId");
+        Query query = em.createQuery("SELECT DISTINCT si FROM StockItem si WHERE si.product.id = :prodId AND si.pos.id = :posId");
         query.setParameter("prodId", prod.getId());
         query.setParameter("posId", pos.getId());
         List<StockItem> sis = query.getResultList();

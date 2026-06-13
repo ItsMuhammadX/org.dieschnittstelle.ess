@@ -1,19 +1,28 @@
-package impl;
+package org.dieschnittstelle.ess.mip.components.erp.impl;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import org.dieschnittstelle.ess.entities.erp.IndividualisedProductItem;
 import org.dieschnittstelle.ess.entities.erp.PointOfSale;
 import org.dieschnittstelle.ess.entities.erp.StockItem;
 import org.dieschnittstelle.ess.mip.components.erp.api.StockSystem;
 import org.dieschnittstelle.ess.mip.components.erp.crud.api.PointOfSaleCRUD;
 import org.dieschnittstelle.ess.mip.components.erp.crud.impl.StockItemCRUD;
+import org.dieschnittstelle.ess.utils.interceptors.Logged;
 
 import java.util.List;
 
 
+@ApplicationScoped
+@Transactional
+@Logged
 public class StockSystemImpl implements StockSystem {
 
+    @Inject
     private PointOfSaleCRUD posCRUD;
 
+    @Inject
     private StockItemCRUD stockItemCRUD;
 
 

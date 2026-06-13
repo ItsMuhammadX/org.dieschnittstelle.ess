@@ -32,7 +32,7 @@ public interface ProductCRUD {
 	public AbstractProduct readProduct(@PathParam("id") long productID);
 
 	@DELETE
-	@Path("/WWWWW")
+	@Path("/{id}")
 	public boolean deleteProduct(@PathParam("id") long productID);
 
 	@GET

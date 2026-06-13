@@ -1,4 +1,4 @@
-package org.dieschnittstelle.ess.mip.components.erp.dto;
+package org.dieschnittstelle.ess.mip.components.erp.api.dto;
 
 public class StockItemDTO {
 
@@ -6,9 +6,12 @@ public class StockItemDTO {
     private long prodId;
     private int units;
 
-    public StockItemDTO(long posId, long prodId, int units) {
-        this.posId = posId;
+    public StockItemDTO() {
+    }
+
+    public StockItemDTO(long prodId, long posId, int units) {
         this.prodId = prodId;
+        this.posId = posId;
         this.units = units;
     }
 
