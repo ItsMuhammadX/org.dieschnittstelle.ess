@@ -70,7 +70,10 @@ public class ProductCRUDImpl implements ProductCRUD {
 
     @Override
     public List<Campaign> getCampaignsForProduct(long productID) {
-        return List.of();
+        //return List.of();
+        Query query = em.createQuery("SELECT DISTINCT c " + "FROM Campaign c " + "JOIN c.bundles b " + "WHERE b.product.id = :productId",  Campaign.class);
+        query.setParameter("productId", productID);
+        return query.getResultList();
     }
 
 }
