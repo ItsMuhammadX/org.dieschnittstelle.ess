@@ -1,5 +1,9 @@
 package org.dieschnittstelle.ess.mip.components.shopping.impl;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import org.apache.logging.log4j.Logger;
 import org.dieschnittstelle.ess.entities.crm.AbstractTouchpoint;
 import org.dieschnittstelle.ess.entities.crm.Customer;
@@ -8,13 +12,23 @@ import org.dieschnittstelle.ess.entities.crm.CustomerTransactionShoppingCartItem
 import org.dieschnittstelle.ess.entities.erp.AbstractProduct;
 import org.dieschnittstelle.ess.entities.erp.Campaign;
 import org.dieschnittstelle.ess.entities.shopping.ShoppingCartItem;
+import org.dieschnittstelle.ess.mip.components.crm.api.CampaignTracking;
+import org.dieschnittstelle.ess.mip.components.crm.api.CustomerTracking;
+import org.dieschnittstelle.ess.mip.components.crm.api.TouchpointAccess;
+import org.dieschnittstelle.ess.mip.components.crm.crud.api.CustomerCRUD;
 import org.dieschnittstelle.ess.mip.components.shopping.api.PurchaseService;
 import org.dieschnittstelle.ess.mip.components.shopping.api.ShoppingException;
 import org.dieschnittstelle.ess.mip.components.shopping.cart.api.ShoppingCart;
+import org.dieschnittstelle.ess.mip.components.shopping.cart.api.ShoppingCartService;
+import org.dieschnittstelle.ess.mip.components.shopping.cart.impl.ShoppingCartEntity;
+import org.dieschnittstelle.ess.utils.interceptors.Logged;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Transactional
+@Logged
+@RequestScoped
 public class PurchaseServiceImpl implements PurchaseService {
 
     protected static Logger logger = org.apache.logging.log4j.LogManager.getLogger(PurchaseServiceImpl.class);
@@ -24,10 +38,20 @@ public class PurchaseServiceImpl implements PurchaseService {
      */
     private ShoppingCart shoppingCart;
 
+    @Inject
     private CustomerTracking customerTracking;
 
+    @Inject
     private CampaignTracking campaignTracking;
 
+    @Inject
+    private CustomerCRUD customerCRUD;
+
+    @Inject
+    private TouchpointAccess touchpointAccess;
+
+    @Inject
+    private ShoppingCartService shoppingCartService;
     /**
      * the customer
      */
@@ -149,6 +173,13 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     @Override
     public void purchaseCartAtTouchpointForCustomer(PurchaseDTO purchaseDTO) throws ShoppingException {
+        this.customer = customerCRUD.readCustomer(purchaseDTO.getCustomerId());
+        this.touchpoint = touchpointAccess.readTouchpoint(purchaseDTO.getTouchpointId());
+        this.shoppingCart = new ShoppingCartEntity();
+        shoppingCartService.getItems(purchaseDTO.getShoppingCartId()).forEach(item -> {
+            this.shoppingCart.addItem(new ShoppingCartItem(item.getErpProductId(), item.getUnits(), item.isCampaign()));
+        });
+        purchase();
 
     }
 }

@@ -18,10 +18,17 @@ public interface PurchaseService {
 		public long touchpointId;
 		public long customerId;
 
+
+
+
 		public PurchaseDTO(long shoppingCartId, long touchpointId, long customerId) {
 			this.shoppingCartId = shoppingCartId;
 			this.touchpointId = touchpointId;
 			this.customerId = customerId;
+		}
+
+		public PurchaseDTO() {
+
 		}
 
 		public long getShoppingCartId() {

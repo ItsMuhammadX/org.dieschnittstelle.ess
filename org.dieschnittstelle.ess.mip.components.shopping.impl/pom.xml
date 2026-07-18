@@ -87,6 +87,12 @@
             <version>${revision}</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.dieschnittstelle.ess.shared</groupId>
+            <artifactId>lib-entities-erp</artifactId>
+            <version>${revision}</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
 </project>
